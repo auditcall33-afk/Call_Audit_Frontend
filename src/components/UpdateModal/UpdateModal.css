@@ -1,0 +1,202 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 20, 40, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: backdropIn 0.2s ease;
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-minimized {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 24px;
+  background: transparent;
+  pointer-events: none;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+  width: 680px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: all;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-maximized {
+  width: 95vw;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.modal-min-box {
+  width: 280px;
+  max-height: 56px;
+  border-radius: var(--radius-md);
+}
+
+/* Title bar */
+.modal-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--primary) 0%, #FF9F43 100%);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.modal-min-box .modal-titlebar {
+  border-radius: var(--radius-md);
+}
+
+.modal-title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal-title-icon { opacity: 0.9; }
+
+.modal-change-count {
+  background: rgba(255,255,255,0.25);
+  border-radius: 99px;
+  padding: 1px 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.modal-window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.modal-win-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.modal-win-btn:hover { background: rgba(255,255,255,0.35); }
+.modal-close:hover    { background: rgba(239,68,68,0.8); }
+
+/* Body */
+.modal-body {
+  padding: 20px 22px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.modal-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+}
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.modal-table th {
+  background: #F8F9FF;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.modal-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.modal-table tr:last-child td { border-bottom: none; }
+.modal-table tr:hover td { background: #F8F9FF; }
+
+.modal-idx { color: var(--text-muted); font-weight: 600; width: 32px; }
+.modal-field { font-weight: 600; color: var(--text-primary); }
+.modal-old { color: var(--danger); text-decoration: line-through; opacity: 0.8; }
+.modal-new { color: var(--success); font-weight: 500; }
+.modal-empty { color: var(--text-muted); font-style: normal; }
+
+/* Remarks */
+.modal-remarks {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.modal-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.modal-remarks-ta { animation: slideDown 0.18s ease; }
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 22px;
+  border-top: 1.5px solid var(--border);
+  background: #FAFBFF;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  flex-shrink: 0;
+}
