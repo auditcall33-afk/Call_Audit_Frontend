@@ -1,0 +1,132 @@
+.audit-form-page {
+  max-width: 1400px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.audit-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 24px;
+}
+
+.audit-col-main {
+  min-width: 0;
+}
+
+.audit-col-side {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid #E5E7EB;
+  background: #F9FAFB;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  color: #111827;
+  margin: 0;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.quick-summary {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-key {
+  font-size: 13px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.summary-val {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.status-chip {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-fatal {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.status-ok {
+  background: #D1FAE5;
+  color: #059669;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #10B981;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #059669;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-md {
+  padding: 10px 20px;
+}

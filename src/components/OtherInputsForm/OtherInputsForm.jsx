@@ -8,19 +8,6 @@ import './OtherInputsForm.css';
 
 
 export default function OtherInputsForm({ values, onChange }) {
-  const dd = (id, label, opts, placeholder='Select…') => (
-    <Dropdown id={id} label={label} options={opts} placeholder={placeholder}
-      value={values[id]||''} onChange={v=>onChange(id,v)} clearable />
-  );
-  const inp = (id, label, placeholder='') => (
-    <Input id={id} label={label} placeholder={placeholder}
-      value={values[id]||''} onChange={v=>onChange(id,v)} />
-  );
-  const ta = (id, label, placeholder='', rows=3) => (
-    <Textarea id={id} label={label} placeholder={placeholder} rows={rows}
-      value={values[id]||''} onChange={v=>onChange(id,v)} />
-  );
-
   return (
     <CollapsibleCard title="Other Inputs" icon={<ClipboardList size={15} />} defaultOpen={true}>
       <div className="other-inputs-wrapper">
