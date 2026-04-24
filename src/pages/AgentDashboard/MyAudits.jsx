@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { auditService } from '../../services/auditService';
 import { authService } from '../../services/authService';
 import FilterBar from '../../components/common/FilterBar';
@@ -10,7 +9,6 @@ import { toast } from 'react-toastify';
 import './MyAudits.css';
 
 export default function MyAudits() {
-  const navigate = useNavigate();
   const user = authService.getCurrentUser();
   const [audits, setAudits] = useState([]);
   const [filteredAudits, setFilteredAudits] = useState([]);
@@ -19,6 +17,9 @@ export default function MyAudits() {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [acknowledgmentStatus, setAcknowledgmentStatus] = useState('');
+  const [acknowledgmentComment, setAcknowledgmentComment] = useState('');
+  const [submittingAcknowledgment, setSubmittingAcknowledgment] = useState(false);
 
   const [filters, setFilters] = useState({
     search: '',
@@ -40,7 +41,7 @@ export default function MyAudits() {
   const fetchAudits = async () => {
     try {
       setLoading(true);
-      const data = await auditService.getAuditsByAgentId(user.agent_id);
+      const data = await auditService.getAuditsByAgentId(user.id);
       setAudits(data);
       setFilteredAudits(data);
     } catch (error) {
@@ -90,7 +91,37 @@ export default function MyAudits() {
 
   const handleViewDetails = (audit) => {
     setSelectedAudit(audit);
+    setAcknowledgmentStatus('');
+    setAcknowledgmentComment('');
     setShowModal(true);
+  };
+
+  const handleSubmitAcknowledgment = async () => {
+    if (!acknowledgmentStatus) {
+      toast.error('Please select acknowledgment status');
+      return;
+    }
+
+    if (acknowledgmentStatus === 'NOT_SATISFIED' && !acknowledgmentComment.trim()) {
+      toast.error('Comment is required when you are not satisfied');
+      return;
+    }
+
+    try {
+      setSubmittingAcknowledgment(true);
+      await auditService.acknowledgeAudit(selectedAudit.id || selectedAudit.auditId, {
+        acknowledgmentStatus,
+        acknowledgmentComment
+      });
+      toast.success('Acknowledgment submitted successfully');
+      setShowModal(false);
+      fetchAudits(); // Refresh the audits list
+    } catch (error) {
+      console.error('Acknowledgment submission error:', error);
+      toast.error(error.response?.data?.message || 'Failed to submit acknowledgment');
+    } finally {
+      setSubmittingAcknowledgment(false);
+    }
   };
 
   const handleExportPDF = (audit) => {
@@ -170,18 +201,18 @@ export default function MyAudits() {
               </thead>
               <tbody>
                 {currentItems.map(audit => (
-                  <tr key={audit.id || audit.audit_id}>
-                    <td>{audit.call_id}</td>
-                    <td>{new Date(audit.created_at || audit.audit_date).toLocaleDateString()}</td>
+                  <tr key={audit.id || audit.auditId}>
+                    <td>{audit.call_id || audit.callId}</td>
+                    <td>{new Date(audit.created_at || audit.createdAt || audit.audit_date || audit.auditDate).toLocaleDateString()}</td>
                     <td>
-                      {audit.qa ? `${audit.qa.first_name} ${audit.qa.last_name}` : audit.qa_name || '-'}
+                      {audit.qa ? `${audit.qa.first_name || audit.qa.firstName} ${audit.qa.last_name || audit.qa.lastName}` : audit.qa_name || audit.qaName || '-'}
                     </td>
-                    <td>{audit.scored || 0}/100</td>
+                    <td>{audit.scored || audit.scored || 0}/100</td>
                     <td>
-                      <StatusBadge status={audit.fatal_status || 'No'} type="fatal" />
+                      <StatusBadge status={audit.fatal_status || audit.fatalStatus || 'No'} type="fatal" />
                     </td>
                     <td>
-                      <StatusBadge status={audit.status || 'COMPLETED'} type="audit" />
+                      <StatusBadge status={audit.status || audit.auditStatus || 'COMPLETED'} type="audit" />
                     </td>
                     <td>
                       <div className="action-buttons">
@@ -245,16 +276,16 @@ export default function MyAudits() {
                 <div className="info-grid">
                   <div className="info-item">
                     <span className="info-label">Call ID</span>
-                    <span className="info-value">{selectedAudit.call_id}</span>
+                    <span className="info-value">{selectedAudit.call_id || selectedAudit.callId}</span>
                   </div>
                   <div className="info-item">
                     <span className="info-label">Audit Date</span>
-                    <span className="info-value">{new Date(selectedAudit.created_at || selectedAudit.audit_date).toLocaleDateString()}</span>
+                    <span className="info-value">{new Date(selectedAudit.created_at || selectedAudit.createdAt || selectedAudit.audit_date || selectedAudit.auditDate).toLocaleDateString()}</span>
                   </div>
                   <div className="info-item">
                     <span className="info-label">QA Name</span>
                     <span className="info-value">
-                      {selectedAudit.qa ? `${selectedAudit.qa.first_name} ${selectedAudit.qa.last_name}` : selectedAudit.qa_name || '-'}
+                      {selectedAudit.qa ? `${selectedAudit.qa.first_name || selectedAudit.qa.firstName} ${selectedAudit.qa.last_name || selectedAudit.qa.lastName}` : selectedAudit.qa_name || selectedAudit.qaName || '-'}
                     </span>
                   </div>
                 </div>
@@ -274,83 +305,83 @@ export default function MyAudits() {
                   <tbody>
                     <tr>
                       <td>Call Opening</td>
-                      <td>{selectedAudit.call_opening || '-'}</td>
-                      <td>{selectedAudit.call_opening_remark || '-'}</td>
+                      <td>{selectedAudit.call_opening || selectedAudit.callOpening || '-'}</td>
+                      <td>{selectedAudit.call_opening_remark || selectedAudit.callOpeningRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Listening Skills</td>
-                      <td>{selectedAudit.listening_skills || '-'}</td>
-                      <td>{selectedAudit.listening_skills_remark || '-'}</td>
+                      <td>{selectedAudit.listening_skills || selectedAudit.listeningSkills || '-'}</td>
+                      <td>{selectedAudit.listening_skills_remark || selectedAudit.listeningSkillsRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Empathy & Courtesy</td>
-                      <td>{selectedAudit.empathy_courtesy || '-'}</td>
-                      <td>{selectedAudit.empathy_courtesy_remark || '-'}</td>
+                      <td>{selectedAudit.empathy_courtesy || selectedAudit.empathyCourtesy || '-'}</td>
+                      <td>{selectedAudit.empathy_courtesy_remark || selectedAudit.empathyCourtesyRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Tone & Voice Modulation</td>
-                      <td>{selectedAudit.tone_voice_modulation || '-'}</td>
-                      <td>{selectedAudit.tone_voice_modulation_remark || '-'}</td>
+                      <td>{selectedAudit.tone_voice_modulation || selectedAudit.toneVoiceModulation || '-'}</td>
+                      <td>{selectedAudit.tone_voice_modulation_remark || selectedAudit.toneVoiceModulationRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Telephone Etiquettes</td>
-                      <td>{selectedAudit.telephone_etiquettes || '-'}</td>
-                      <td>{selectedAudit.telephone_etiquettes_remark || '-'}</td>
+                      <td>{selectedAudit.telephone_etiquettes || selectedAudit.telephoneEtiquettes || '-'}</td>
+                      <td>{selectedAudit.telephone_etiquettes_remark || selectedAudit.telephoneEtiquettesRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Language Skill</td>
-                      <td>{selectedAudit.language_skill || '-'}</td>
-                      <td>{selectedAudit.language_skill_remark || '-'}</td>
+                      <td>{selectedAudit.language_skill || selectedAudit.languageSkill || '-'}</td>
+                      <td>{selectedAudit.language_skill_remark || selectedAudit.languageSkillRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Call Closure</td>
-                      <td>{selectedAudit.call_closure || '-'}</td>
-                      <td>{selectedAudit.call_closure_remark || '-'}</td>
+                      <td>{selectedAudit.call_closure || selectedAudit.callClosure || '-'}</td>
+                      <td>{selectedAudit.call_closure_remark || selectedAudit.callClosureRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Probing Skills</td>
-                      <td>{selectedAudit.probing_skills || '-'}</td>
-                      <td>{selectedAudit.probing_skills_remark || '-'}</td>
+                      <td>{selectedAudit.probing_skills || selectedAudit.probingSkills || '-'}</td>
+                      <td>{selectedAudit.probing_skills_remark || selectedAudit.probingSkillsRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>System Check</td>
-                      <td>{selectedAudit.system_check || '-'}</td>
-                      <td>{selectedAudit.system_check_remark || '-'}</td>
+                      <td>{selectedAudit.system_check || selectedAudit.systemCheck || '-'}</td>
+                      <td>{selectedAudit.system_check_remark || selectedAudit.systemCheckRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Explanation/Adherence to Process SOP</td>
-                      <td>{selectedAudit.explanation_sop || '-'}</td>
-                      <td>{selectedAudit.explanation_sop_remark || '-'}</td>
+                      <td>{selectedAudit.explanation_sop || selectedAudit.explanationSop || '-'}</td>
+                      <td>{selectedAudit.explanation_sop_remark || selectedAudit.explanationSopRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Rebuttal Handling</td>
-                      <td>{selectedAudit.rebuttal_handling || '-'}</td>
-                      <td>{selectedAudit.rebuttal_handling_remark || '-'}</td>
+                      <td>{selectedAudit.rebuttal_handling || selectedAudit.rebuttalHandling || '-'}</td>
+                      <td>{selectedAudit.rebuttal_handling_remark || selectedAudit.rebuttalHandlingRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Upselling Skills</td>
-                      <td>{selectedAudit.upselling_skills || '-'}</td>
-                      <td>{selectedAudit.upselling_skills_remark || '-'}</td>
+                      <td>{selectedAudit.upselling_skills || selectedAudit.upsellingSkills || '-'}</td>
+                      <td>{selectedAudit.upselling_skills_remark || selectedAudit.upsellingSkillsRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Add-On Pitch</td>
-                      <td>{selectedAudit.add_on_pitch || '-'}</td>
-                      <td>{selectedAudit.add_on_pitch_remark || '-'}</td>
+                      <td>{selectedAudit.add_on_pitch || selectedAudit.addOnPitch || '-'}</td>
+                      <td>{selectedAudit.add_on_pitch_remark || selectedAudit.addOnPitchRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Right Information</td>
-                      <td>{selectedAudit.right_information || '-'}</td>
-                      <td>{selectedAudit.right_information_remark || '-'}</td>
+                      <td>{selectedAudit.right_information || selectedAudit.rightInformation || '-'}</td>
+                      <td>{selectedAudit.right_information_remark || selectedAudit.rightInformationRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Documentation/ System/ CRM Entries</td>
-                      <td>{selectedAudit.documentation_crm || '-'}</td>
-                      <td>{selectedAudit.documentation_crm_remark || '-'}</td>
+                      <td>{selectedAudit.documentation_crm || selectedAudit.documentationCrm || '-'}</td>
+                      <td>{selectedAudit.documentation_crm_remark || selectedAudit.documentationCrmRemark || '-'}</td>
                     </tr>
                     <tr>
                       <td>Documentation/ Order Related</td>
-                      <td>{selectedAudit.documentation_order || '-'}</td>
-                      <td>{selectedAudit.documentation_order_remark || '-'}</td>
+                      <td>{selectedAudit.documentation_order || selectedAudit.documentationOrder || '-'}</td>
+                      <td>{selectedAudit.documentation_order_remark || selectedAudit.documentationOrderRemark || '-'}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -362,11 +393,11 @@ export default function MyAudits() {
                 <div className="scores-summary">
                   <div className="score-item">
                     <span className="score-label">Fatal Status</span>
-                    <StatusBadge status={selectedAudit.fatal_status || 'No'} type="fatal" />
+                    <StatusBadge status={selectedAudit.fatal_status || selectedAudit.fatalStatus || 'No'} type="fatal" />
                   </div>
                   <div className="score-item">
                     <span className="score-label">Fatal Count</span>
-                    <span className="score-value">{selectedAudit.fatal_count || 0}</span>
+                    <span className="score-value">{selectedAudit.fatal_count || selectedAudit.fatalCount || 0}</span>
                   </div>
                   <div className="score-item">
                     <span className="score-label">Scorable</span>
@@ -378,6 +409,78 @@ export default function MyAudits() {
                   </div>
                 </div>
               </div>
+
+              {/* Acknowledgment Section */}
+              {(!selectedAudit.acknowledgement || selectedAudit.acknowledgement === 'PENDING') && (
+                <div className="section">
+                  <h3>Acknowledge Audit</h3>
+                  <div className="acknowledgment-form">
+                    <div className="form-group">
+                      <label htmlFor="acknowledgmentStatus">Acknowledgment Status *</label>
+                      <select
+                        id="acknowledgmentStatus"
+                        value={acknowledgmentStatus}
+                        onChange={(e) => {
+                          setAcknowledgmentStatus(e.target.value);
+                          if (e.target.value === 'SATISFIED') {
+                            setAcknowledgmentComment('');
+                          }
+                        }}
+                        className="form-select"
+                        required
+                      >
+                        <option value="">Select acknowledgment status</option>
+                        <option value="SATISFIED">Satisfied</option>
+                        <option value="NOT_SATISFIED">Not Satisfied</option>
+                      </select>
+                    </div>
+
+                    {acknowledgmentStatus === 'NOT_SATISFIED' && (
+                      <div className="form-group">
+                        <label htmlFor="acknowledgmentComment">Comment *</label>
+                        <textarea
+                          id="acknowledgmentComment"
+                          value={acknowledgmentComment}
+                          onChange={(e) => setAcknowledgmentComment(e.target.value)}
+                          className="form-textarea"
+                          placeholder="Please provide details about why you are not satisfied..."
+                          required
+                          rows={4}
+                        />
+                      </div>
+                    )}
+
+                    <button
+                      onClick={handleSubmitAcknowledgment}
+                      disabled={submittingAcknowledgment || !acknowledgmentStatus}
+                      className="btn btn-primary"
+                    >
+                      {submittingAcknowledgment ? 'Submitting...' : 'Submit Acknowledgment'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Show acknowledgment status if already acknowledged */}
+              {selectedAudit.acknowledgement && selectedAudit.acknowledgement !== 'PENDING' && (
+                <div className="section">
+                  <h3>Acknowledgment Status</h3>
+                  <div className="acknowledgment-status">
+                    <div className="status-item">
+                      <span className="status-label">Status:</span>
+                      <span className={`status-value ${selectedAudit.acknowledgement === 'SATISFIED' ? 'satisfied' : 'not-satisfied'}`}>
+                        {selectedAudit.acknowledgement === 'SATISFIED' ? 'Satisfied' : 'Not Satisfied'}
+                      </span>
+                    </div>
+                    {selectedAudit.acknowledgeRemark && (
+                      <div className="status-item">
+                        <span className="status-label">Comment:</span>
+                        <span className="status-value">{selectedAudit.acknowledgeRemark}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="modal-footer">
               <button onClick={() => handleExportPDF(selectedAudit)} className="export-pdf-button">

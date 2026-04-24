@@ -8,6 +8,7 @@ const SCORE_FIELDS = [
   { id: 'fatalCount',        label: 'Fatal Count',         default: 0,     editable: false, color: 'coral'  },
   { id: 'scorable',          label: 'Scorable',            default: 100,   editable: false, color: 'blue'  },
   { id: 'scored',            label: 'Scored',              default: 0,     editable: false, color: 'purple'},
+  { id: 'nonFatalScore',     label: 'Non-Fatal Score',     default: 0,     editable: false, color: 'green' },
 ];
 
 const colorMap = {
@@ -15,6 +16,7 @@ const colorMap = {
   purple: { bg: '#F5F3FF', text: '#6D28D9', border: '#DDD6FE' },
   amber:  { bg: '#FFFBEB', text: '#B45309', border: '#FDE68A' },
   coral:  { bg: '#FFF5F3', text: '#E8533A', border: '#FECACA' },
+  green:  { bg: '#ECFDF5', text: '#059669', border: '#A7F3D0' },
 };
 
 export default function ScoresSection({ values, onChange }) {

@@ -9,6 +9,7 @@ import './QAReports.css';
 
 export default function QAReports() {
   const user = authService.getCurrentUser();
+  console.log('QAReports user:', user);
   const [dateFrom, setDateFrom] = useState(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
   const [dateTo, setDateTo] = useState(new Date());
   const [selectedAgent, setSelectedAgent] = useState('');

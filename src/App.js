@@ -50,8 +50,8 @@ export default function App() {
           <Route path="reports" element={<QAReports />} />
         </Route>
 
-        {/* Default Redirect - TEMPORARILY CHANGED FOR TESTING */}
-        <Route path="/" element={<Navigate to="/qa" replace />} />
+        {/* Default Redirect */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

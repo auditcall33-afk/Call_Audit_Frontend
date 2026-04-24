@@ -25,17 +25,32 @@ export default function Login() {
     setLoading(true);
 
     try {
+      console.log('Submitting login form with:', formData.email);
       const response = await authService.login(formData.email, formData.password);
+      console.log('Login successful, full response:', response);
+      console.log('Response role:', response.role);
+      console.log('Role type:', typeof response.role);
       toast.success('Login successful!');
       
-      // Redirect based on role
-      if (response.user.role === 'AGENT') {
+      // Redirect based on role - role is directly in response, not nested
+      const userRole = response.role;
+      console.log('Checking role for navigation:', userRole);
+      
+      if (userRole === 'AGENT') {
+        console.log('Navigating to /agent');
         navigate('/agent');
-      } else if (response.user.role === 'QA') {
+      } else if (userRole === 'QA') {
+        console.log('Navigating to /qa');
         navigate('/qa');
+      } else {
+        console.log('Unknown role:', userRole);
+        toast.error(`Unknown role: ${userRole}`);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
+      console.error('Login error:', error);
+      console.error('Error response:', error.response);
+      console.error('Error message:', error.message);
+      toast.error(error.response?.data?.message || error.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }

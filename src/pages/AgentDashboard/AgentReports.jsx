@@ -9,6 +9,7 @@ import './AgentReports.css';
 
 export default function AgentReports() {
   const user = authService.getCurrentUser();
+  console.log('AgentReports user:', user);
   const [dateFrom, setDateFrom] = useState(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
   const [dateTo, setDateTo] = useState(new Date());
   const [reportData, setReportData] = useState(null);
@@ -17,7 +18,7 @@ export default function AgentReports() {
   const generateReport = async () => {
     try {
       setLoading(true);
-      const audits = await auditService.getAuditsByAgentId(user.agent_id);
+      const audits = await auditService.getAuditsByAgentId(user.id);
       
       // Filter by date range
       const filteredAudits = audits.filter(audit => {

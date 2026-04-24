@@ -7,6 +7,7 @@ export default function QADashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = authService.getCurrentUser();
+  console.log('QADashboard user:', user);
 
   const handleLogout = () => {
     authService.logout();
@@ -45,11 +46,11 @@ export default function QADashboard() {
         <div className="sidebar-footer">
           <div className="user-info">
             <div className="user-avatar">
-              {user?.first_name?.[0] || 'Q'}
+              {user?.firstName?.[0] || user?.email?.[0] || 'U'}
             </div>
             <div className="user-details">
-              <p className="user-name">{user?.first_name} {user?.last_name}</p>
-              <p className="user-email">{user?.email}</p>
+              <div className="user-name">{user?.firstName || user?.email}</div>
+              <div className="user-role">{user?.role}</div>
             </div>
           </div>
           <button onClick={handleLogout} className="logout-button">
