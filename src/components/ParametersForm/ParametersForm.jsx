@@ -36,27 +36,27 @@ const empathyCourtesyOpts = [
 
 const toneVoiceModulationOpts = [
   yesOption(6),
-  { value: 'NO - Interruption observed', label: 'NO - Interruption observed', score: 0 },
-  { value: 'NO - Rushing observed on the call', label: 'NO - Rushing observed on the call', score: 0 },
-  { value: 'NO - Fumbled/Stammered', label: 'NO - Fumbled/Stammered', score: 0 },
-  { value: 'NO - Sounded Draggy Tone And Dull on the call', label: 'NO - Sounded Draggy Tone And Dull on the call', score: 0 },
-  { value: 'NO - Sounded Scripted Or Robotic-No Human Touch', label: 'NO - Sounded Scripted Or Robotic-No Human Touch', score: 0 },
-  { value: 'NO - Speech Unclear', label: 'NO - Speech Unclear', score: 0 },
-  { value: 'NO - Confidence Missing', label: 'NO - Confidence Missing', score: 0 },
-  { value: 'NO - Did not display energy and enthusiasm', label: 'NO - Did not display energy and enthusiasm', score: 0 },
-  { value: 'NO - Rude/sarcastic/curt/commanding tone->ZTP', label: 'NO - Rude/sarcastic/curt/commanding tone->ZTP', score: 0 }
+  { value: 'no-Interruption observed', label: 'no-Interruption observed', score: 0 },
+  { value: 'no-Rushing observed on the call', label: 'no-Rushing observed on the call', score: 0 },
+  { value: 'no-Fumbled/ Stammered', label: 'no-Fumbled/ Stammered', score: 0 },
+  { value: 'no-Sounded Draggy Tone And Dull on the call', label: 'no-Sounded Draggy Tone And Dull on the call', score: 0 },
+  { value: 'no-Sounded Scripted Or Robotic-No Human Touch', label: 'no-Sounded Scripted Or Robotic-No Human Touch', score: 0 },
+  { value: 'no-Speech Unclear', label: 'no-Speech Unclear', score: 0 },
+  { value: 'no-Confidence Missing', label: 'no-Confidence Missing', score: 0 },
+  { value: 'no-Did not display energy and enthusiasm', label: 'no-Did not display energy and enthusiasm', score: 0 },
+  { value: 'fatal-Rude/sarcastic/curt/commanding tone-ZTP', label: 'fatal-Rude/sarcastic/curt/commanding tone-ZTP', score: 0 }
 ];
 
 const telephoneEtiquettesOpts = [
   yesOption(6),
-  { value: 'NO - Approach Was Casual', label: 'NO - Approach Was Casual', score: 0 },
-  { value: 'NO - Dead Air Threshold Exceeded', label: 'NO - Dead Air Threshold Exceeded', score: 0 },
-  { value: 'NO - Hold Threshold Exceeded', label: 'NO - Hold Threshold Exceeded', score: 0 },
-  { value: 'NO - Slang Words/Jargons observed', label: 'NO - Slang Words/Jargons observed', score: 0 },
-  { value: 'NO - Yawning/singing/cross talk observed-Fatal', label: 'NO - Yawning/singing/cross talk observed-Fatal', score: 0 },
-  { value: 'NO - Laughing/Cross talk observed-Derogatory/aimed at customer-ZTP', label: 'NO - Laughing/Cross talk observed-Derogatory/aimed at customer-ZTP', score: 0 },
-  { value: 'NO - Late replies/Unnecessary hold/Mute amounting to call avoidance-ZTP', label: 'NO - Late replies/Unnecessary hold/Mute amounting to call avoidance-ZTP', score: 0 },
-  { value: 'NO - Did not follow the transfer procedure-ZTP', label: 'NO - Did not follow the transfer procedure-ZTP', score: 0 }
+  { value: 'no-Approach Was Casual', label: 'no-Approach Was Casual', score: 0 },
+  { value: 'no-Dead Air Threshold Exceeded', label: 'no-Dead Air Threshold Exceeded', score: 0 },
+  { value: 'no-Hold Threshold Exceeded', label: 'no-Hold Threshold Exceeded', score: 0 },
+  { value: 'no-Slang Words/Jargons observed', label: 'no-Slang Words/Jargons observed', score: 0 },
+  { value: 'fatal-Yawning/singing/cross talk observed-Fatal', label: 'fatal-Yawning/singing/cross talk observed-Fatal', score: 0 },
+  { value: 'fatal-Laughing/Cross talk observed-Derogatory/aimed at customer-ZTP', label: 'fatal-Laughing/Cross talk observed-Derogatory/aimed at customer-ZTP', score: 0 },
+  { value: 'fatal-Late replies/Unnecessary hold/Mute amounting to call avoidance-ZTP', label: 'fatal-Late replies/Unnecessary hold/Mute amounting to call avoidance-ZTP', score: 0 },
+  { value: 'fatal-Did not follow the transfer procedure-ZTP', label: 'fatal-Did not follow the transfer procedure-ZTP', score: 0 }
 ];
 
 const languageSkillOpts = [
@@ -78,75 +78,80 @@ const callClosureOpts = [
 
 const probingSkillsOpts = [
   yesOption(6),
-  { value: 'NO - 1. Did not probe according customer concern', label: 'NO - 1. Did not probe according customer concern', score: 0 },
-  { value: 'NO - 2. Did Not Attempt To Ask Questions For Better Understanding', label: 'NO - 2. Did Not Attempt To Ask Questions For Better Understanding', score: 0 },
-  { value: 'NO - 3. Incorrect/Irrelevant Probing Done', label: 'NO - 3. Incorrect/Irrelevant Probing Done', score: 0 },
-  { value: 'NO - 4. Negative Probing done', label: 'NO - 4. Negative Probing done', score: 0 },
-  { value: 'NO - 5. Unnecessary Probing Done', label: 'NO - 5. Unnecessary Probing Done', score: 0 }
+  { value: 'fatal-1. Did not probe according customer concern', label: 'fatal-1. Did not probe according customer concern', score: 0 },
+  { value: 'fatal-2. Did Not Attempt To Ask Questions For Better Understanding', label: 'fatal-2. Did Not Attempt To Ask Questions For Better Understanding', score: 0 },
+  { value: 'fatal-3. Incorrect/Irrelevant Probing Done', label: 'fatal-3. Incorrect/Irrelevant Probing Done', score: 0 },
+  { value: 'fatal-4. Negative Probing done', label: 'fatal-4. Negative Probing done', score: 0 },
+  { value: 'fatal-5. Unnecessary Probing Done', label: 'fatal-5. Unnecessary Probing Done', score: 0 }
 ];
 
 const systemCheckOpts = [
   yesOption(6),
-  { value: 'NO - Did not relate to SPO/VPQ', label: 'NO - Did not relate to SPO/VPQ', score: 0 },
-  { value: 'NO - Customer concern/history not checked', label: 'NO - Customer concern/history not checked', score: 0 }
+  { value: 'fatal-Did not relate to SPQ/VPQ', label: 'fatal-Did not relate to SPQ/VPQ', score: 0 },
+  { value: 'fatal-Customer concern/history not checked', label: 'fatal-Customer concern/history not checked', score: 0 }
 ];
 
 const explanationSopOpts = [
   yesOption(8),
-  { value: 'NO - Did not use the scripts basis the customer profile M1/M2/M3/M4', label: 'NO - Did not use the scripts basis the customer profile M1/M2/M3/M4', score: 0 },
-  { value: 'NO - failed to explain science', label: 'NO - failed to explain science', score: 0 },
-  { value: 'NO - failed to explain adaptation process', label: 'NO - failed to explain adaptation process', score: 0 },
-  { value: 'NO - failed to explain usage procedure', label: 'NO - failed to explain usage procedure', score: 0 },
-  { value: 'NO - failed to explain the benefits of key ingredients', label: 'NO - failed to explain the benefits of key ingredients', score: 0 },
-  { value: 'NO - failed to address customer concern', label: 'NO - failed to address customer concern', score: 0 },
-  { value: 'NO - Underline query not addressed', label: 'NO - Underline query not addressed', score: 0 },
-  { value: 'NO - Seasonal script-Add on pitch according to concern', label: 'NO - Seasonal script-Add on pitch according to concern', score: 0 }
+  { value: 'fatal-Did not use the scripts basis the customer profile M1/M2/M3/Mn', label: 'fatal-Did not use the scripts basis the customer profile M1/M2/M3/Mn', score: 0 },
+  { value: 'fatal-Failed to explain science', label: 'fatal-Failed to explain science', score: 0 },
+  { value: 'fatal-Failed to explain adaptation process', label: 'fatal-Failed to explain adaptation process', score: 0 },
+  { value: 'fatal-Failed to explain usage procedure', label: 'fatal-Failed to explain usage procedure', score: 0 },
+  { value: 'fatal-Failed to explain the benefits of key ingredients', label: 'fatal-Failed to explain the benefits of key ingredients', score: 0 },
+  { value: 'fatal-Failed to address customer concern', label: 'fatal-Failed to address customer concern', score: 0 },
+  { value: 'fatal-Underline query not addressed', label: 'fatal-Underline query not addressed', score: 0 },
+  { value: 'fatal-Seasonal script-Add on pitch according to concern', label: 'fatal-Seasonal script-Add on pitch according to concern', score: 0 }
 ];
 
 const rebuttalHandlingOpts = [
   yesOption(8),
-  { value: 'NO - Did not try to retain customer', label: 'NO - Did not try to retain customer', score: 0 },
-  { value: 'NO - Did not pitch USPs of the brand', label: 'NO - Did not pitch USPs of the brand', score: 0 },
-  { value: 'NO - Did not inform about follow up/switch/regimen review link', label: 'NO - Did not inform about follow up/switch/regimen review link', score: 0 }
+  { value: 'fatal-Did not try to retain customer', label: 'fatal-Did not try to retain customer', score: 0 },
+  { value: 'fatal-Did not pitch USPs of the brand', label: 'fatal-Did not pitch USPs of the brand', score: 0 },
+  { value: 'fatal-Did not inform about follow up/switch/regimen review link', label: 'fatal-Did not inform about follow up/switch/regimen review link', score: 0 }
 ];
 
 const upsellingSkillsOpts = [
   yesOption(8),
-  { value: 'NO - Lack of convincing skills-Effective pitching missing-Only markdown', label: 'NO - Lack of convincing skills-Effective pitching missing-Only markdown', score: 0 },
-  { value: 'NO - Did not follow quantity left rebuttal', label: 'NO - Did not follow quantity left rebuttal', score: 0 },
-  { value: 'NO - Did not pitch individual product', label: 'NO - Did not pitch individual product', score: 0 },
-  { value: 'NO - Weaker confirmation/Force Sale-ZTP', label: 'NO - Weaker confirmation/Force Sale-ZTP', score: 0 }
+  { value: 'fatal-Lack of convincing skills-Effective pitching missing-Only markdown', label: 'fatal-Lack of convincing skills-Effective pitching missing-Only markdown', score: 0 },
+  { value: 'fatal-Did not follow quantity left rebuttal', label: 'fatal-Did not follow quantity left rebuttal', score: 0 },
+  { value: 'fatal-Did not pitch individual product', label: 'fatal-Did not pitch individual product', score: 0 },
+  { value: 'fatal-Weaker confirmation/Force Sale-ZTP', label: 'fatal-Weaker confirmation/Force Sale-ZTP', score: 0 }
 ];
 
 const addOnPitchOpts = [
   yesOption(2),
-  { value: 'NO - Did not pitch add-on products', label: 'NO - Did not pitch add-on products', score: 0 }
+  { value: 'fatal-Did not pitch add-on products', label: 'fatal-Did not pitch add-on products', score: 0 }
 ];
 
 const rightInformationOpts = [
   yesOption(6),
-  { value: 'NO - Membership Plan Benefits, Membership Plan Expiry Date & Year not explained', label: 'NO - Membership Plan Benefits, Membership Plan Expiry Date & Year not explained', score: 0 },
-  { value: 'NO - Incorrect Delivery TAT informed', label: 'NO - Incorrect Delivery TAT informed', score: 0 },
-  { value: 'NO - No TAT informed for delivery/complaint resolution', label: 'NO - No TAT informed for delivery/complaint resolution', score: 0 },
-  { value: 'NO - Did not inform the price(amount payable) of the order placed', label: 'NO - Did not inform the price(amount payable) of the order placed', score: 0 },
-  { value: 'NO - RPC not confirmed-Fatal', label: 'NO - RPC not confirmed-Fatal', score: 0 },
-  { value: 'NO - Address with phone number not confirmed', label: 'NO - Address with phone number not confirmed', score: 0 },
-  { value: 'NO - Did not inform payment method', label: 'NO - Did not inform payment method', score: 0 }
+  { value: 'fatal-Membership Plan Benefits, Membership Plan Expiry Date & Year not explained', label: 'fatal-Membership Plan Benefits, Membership Plan Expiry Date & Year not explained', score: 0 },
+  { value: 'fatal-Incorrect Delivery TAT informed', label: 'fatal-Incorrect Delivery TAT informed', score: 0 },
+  { value: 'fatal-No TAT informed for delivery/complaint resolution', label: 'fatal-No TAT informed for delivery/complaint resolution', score: 0 },
+  { value: 'fatal-Did not inform the price(amount payable) of the order placed', label: 'fatal-Did not inform the price(amount payable) of the order placed', score: 0 },
+  { value: 'fatal-RPC not confirmed-Fatal', label: 'fatal-RPC not confirmed-Fatal', score: 0 },
+  { value: 'fatal-Address with phone number not confirmed', label: 'fatal-Address with phone number not confirmed', score: 0 },
+  { value: 'fatal-Did not inform payment method', label: 'fatal-Did not inform payment method', score: 0 }
 ];
 
 const documentationCrmOpts = [
   yesOption(6),
-  { value: 'NO - Incorrect/Incomplete tagging observed', label: 'NO - Incorrect/Incomplete tagging observed', score: 0 },
-  { value: 'NO - No VOC captured', label: 'NO - No VOC captured', score: 0 },
-  { value: 'NO - Incorrect/Incomplete VOC captured', label: 'NO - Incorrect/Incomplete VOC captured', score: 0 },
-  { value: 'NO - Product incorrectly tagged', label: 'NO - Product incorrectly tagged', score: 0 }
+  { value: 'fatal-No tagging observed', label: 'fatal-No tagging observed', score: 0 },
+  { value: 'fatal-Incorrect/Incomplete tagging observed', label: 'fatal-Incorrect/Incomplete tagging observed', score: 0 },
+  { value: 'fatal-No VOC captured', label: 'fatal-No VOC captured', score: 0 },
+  { value: 'fatal-Incorrect/Incomplete VOC captured', label: 'fatal-Incorrect/Incomplete VOC captured', score: 0 },
+  { value: 'fatal-Product complaint not raised', label: 'fatal-Product complaint not raised', score: 0 }
 ];
 
 const documentationOrderOpts = [
   yesOption(10),
-  { value: 'NO - Date/Cancellation request not taken', label: 'NO - Date/Cancellation request not taken', score: 0 },
-  { value: 'NO - Incorrect Selection Of Add-on product', label: 'NO - Incorrect Selection Of Add-on product', score: 0 },
-  { value: 'NO - Did not select Add-on product', label: 'NO - Did not select Add-on product', score: 0 }
+  { value: 'fatal-Not Captured Updated Billing Address', label: 'fatal-Not Captured Updated Billing Address', score: 0 },
+  { value: 'fatal-Not Selected Correct Order Date', label: 'fatal-Not Selected Correct Order Date', score: 0 },
+  { value: 'fatal-Cancellation request not taken', label: 'fatal-Cancellation request not taken', score: 0 },
+  { value: 'fatal-Incorrect Selection Of Add-on product', label: 'fatal-Incorrect Selection Of Add-on product', score: 0 },
+  { value: 'fatal-Did not select Add-on product', label: 'fatal-Did not select Add-on product', score: 0 },
+  { value: 'fatal-Pending action not raised', label: 'fatal-Pending action not raised', score: 0 },
+  { value: 'fatal-Order not created', label: 'fatal-Order not created', score: 0 }
 ];
 
 /* ── Fields config ───────────────────────────────── */
@@ -199,8 +204,8 @@ export default function ParametersForm({ values, onChange }) {
                 clearable
                 className="param-dropdown"
               />
-              {/* Show remarks field automatically if a NO parameter is chosen */}
-              {values[field.id] && values[field.id].startsWith('NO') && (
+              {/* Show remarks field automatically if a no- or fatal- parameter is chosen */}
+              {values[field.id] && (values[field.id].startsWith('no-') || values[field.id].startsWith('fatal-')) && (
                 <div className="param-remark">
                   <textarea
                     className="remark-input"
