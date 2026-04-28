@@ -1,10 +1,10 @@
-.qa-dashboard {
+.admin-dashboard {
   display: flex;
   min-height: 100vh;
   background: #F3F4F6;
 }
 
-.qa-sidebar {
+.admin-sidebar {
   width: 260px;
   background: white !important;
   border-right: 1px solid #E5E7EB;
@@ -27,13 +27,15 @@
 }
 
 .role-badge {
-  display: inline-block;
+  display: inline-block !important;
   padding: 4px 12px;
-  background: #10B981;
-  color: white;
+  background: #10B981 !important;
+  color: white !important;
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 600;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .sidebar-nav {
@@ -96,14 +98,16 @@
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: #10B981;
-  color: white;
+  background: #10B981 !important;
+  color: white !important;
   border-radius: 50%;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 16px;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .user-details {
@@ -117,24 +121,34 @@
   margin: 0 0 4px 0;
 }
 
+.user-lastname {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
 .logout-button {
   width: 100%;
   padding: 10px;
-  background: #FEE2E2;
-  color: #DC2626;
-  border: 1px solid #FECACA;
+  background: #FEE2E2 !important;
+  color: #DC2626 !important;
+  border: 1px solid #FECACA !important;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
 }
 
 .logout-button:hover {
-  background: #FCA5A5;
+  background: #FCA5A5 !important;
 }
 
-.qa-main {
+.admin-main {
   flex: 1;
   margin-left: 260px;
   padding: 24px;

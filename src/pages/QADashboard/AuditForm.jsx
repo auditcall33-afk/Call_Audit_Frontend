@@ -30,7 +30,35 @@ const INITIAL_PARAMS = {
 
 const INITIAL_OTHERS = {
   agent_id: '',
-  call_id: ''
+  team_leader: '',
+  call_id: '',
+  calling_number: '',
+  call_date: '',
+  call_time: '',
+  call_duration: '',
+  call_category: '',
+  call_type: '',
+  lob: '',
+  order_non_order: '',
+  data_type: '',
+  type_of_audit: '',
+  primary_call_tag_agent: '',
+  primary_call_tag_actual: '',
+  secondary_call_tag_agent: '',
+  secondary_call_tag_actual: '',
+  call_opening_language: '',
+  customer_language: '',
+  call_language: '',
+  acpt: '',
+  fatal_reason: '',
+  acpt_reasons: '',
+  process_voc: '',
+  product_voc: '',
+  tech_voc: '',
+  tni: '',
+  areas_of_improvement: '',
+  call_brief: '',
+  fully_paid_delivery_orders: ''
 };
 
 const INITIAL_SCORES = {
@@ -79,9 +107,40 @@ const FIELD_LABELS = {
   documentationCrm: 'Documentation/ System/ CRM Entries',
   documentationOrder: 'Documentation/ Order Related',
   agent_id: 'Agent ID',
+  team_leader: 'Team Leader',
   call_id: 'Call ID',
+  calling_number: 'Calling Number',
+  call_date: 'Call Date',
+  call_time: 'Call Time',
+  call_duration: 'Call Duration',
+  call_category: 'Call Category',
+  call_type: 'Call Type',
+  lob: 'LOB',
+  order_non_order: 'Order/Non-Order',
+  data_type: 'Data Type',
+  type_of_audit: 'Type Of Audit',
+  primary_call_tag_agent: 'Primary Call Tag (Agent)',
+  primary_call_tag_actual: 'Primary Call Tag (Actual)',
+  secondary_call_tag_agent: 'Secondary Call Tag (Agent)',
+  secondary_call_tag_actual: 'Secondary Call Tag (Actual)',
+  call_opening_language: 'Call Opening Language',
+  customer_language: 'Customer Language',
+  call_language: 'Call Language',
+  acpt: 'ACPT',
+  fatal_reason: 'Fatal Reason',
+  acpt_reasons: 'ACPT Reasons',
+  process_voc: 'Process VOC',
+  product_voc: 'Product VOC',
+  tech_voc: 'Tech VOC',
+  tni: 'TNI',
+  areas_of_improvement: 'Areas Of Improvement',
+  call_brief: 'Call Brief',
+  fully_paid_delivery_orders: 'Fully Paid Delivery Orders',
   scorable: 'Scorable',
-  scored: 'Scored'
+  scored: 'Scored',
+  fatalStatus: 'Fatal Status',
+  fatalCount: 'Fatal Count',
+  nonFatalScore: 'Non Fatal Score'
 };
 
 export default function AuditForm() {
@@ -155,7 +214,7 @@ export default function AuditForm() {
       }
     });
     console.log(`Non-fatal score: ${nonFatalScore} (same calculation, no reset on fatal)`);
-    
+
     const newScores = {
       fatalStatus,
       fatalCount,
@@ -163,10 +222,16 @@ export default function AuditForm() {
       scored,
       nonFatalScore
     };
-    
+
     console.log('Final scores:', newScores);
-    
+
     setScores(newScores);
+
+    // Auto-fill call_type based on fatal status
+    setOthers(prev => ({
+      ...prev,
+      call_type: hasFatal ? 'Fatal' : 'Non Fatal'
+    }));
   }, [params]);
 
   // Recalculate scores when params change
@@ -228,7 +293,35 @@ export default function AuditForm() {
 
       setOthers({
         agent_id: audit.agent?.agentId || audit.agentId || '',
-        call_id: audit.callId || ''
+        team_leader: audit.teamLeader || '',
+        call_id: audit.callId || '',
+        calling_number: audit.callingNumber || '',
+        call_date: audit.callDate || '',
+        call_time: audit.callTime || '',
+        call_duration: audit.callDuration || '',
+        call_category: audit.callCategory || '',
+        call_type: audit.callType || '',
+        lob: audit.lob || '',
+        order_non_order: audit.orderNonOrder || '',
+        data_type: audit.dataType || '',
+        type_of_audit: audit.typeOfAudit || '',
+        primary_call_tag_agent: audit.primaryCallTagAgent || '',
+        primary_call_tag_actual: audit.primaryCallTagActual || '',
+        secondary_call_tag_agent: audit.secondaryCallTagAgent || '',
+        secondary_call_tag_actual: audit.secondaryCallTagActual || '',
+        call_opening_language: audit.callOpeningLanguage || '',
+        customer_language: audit.customerLanguage || '',
+        call_language: audit.callLanguage || '',
+        acpt: audit.acpt || '',
+        fatal_reason: audit.fatalReason || '',
+        acpt_reasons: audit.acptReasons || '',
+        process_voc: audit.processVoc || '',
+        product_voc: audit.productVoc || '',
+        tech_voc: audit.techVoc || '',
+        tni: audit.tni || '',
+        areas_of_improvement: audit.areasOfImprovement || '',
+        call_brief: audit.callBrief || '',
+        fully_paid_delivery_orders: audit.fullyPaidDeliveryOrders || ''
       });
 
       setScores({
@@ -267,27 +360,6 @@ export default function AuditForm() {
   };
 
   const handleSaveClick = () => {
-    // Validate required fields
-    if (!others.agent_id || !others.call_id) {
-      toast.error('All fields are required');
-      return;
-    }
-
-    // Validate all parameter fields are filled
-    const requiredFields = [
-      'callOpening', 'listeningSkills', 'empathyCourtesy', 'toneVoiceModulation',
-      'telephoneEtiquettes', 'languageSkill', 'callClosure', 'probingSkills',
-      'systemCheck', 'explanationSop', 'rebuttalHandling', 'upsellingSkills',
-      'addOnPitch', 'rightInformation', 'documentationCrm', 'documentationOrder'
-    ];
-
-    for (const field of requiredFields) {
-      if (!params[field]) {
-        toast.error('All fields are required');
-        return;
-      }
-    }
-
     const changes = buildChanges();
     if (!changes.length) {
       toast.info('No changes to save.');
@@ -299,37 +371,42 @@ export default function AuditForm() {
   const handleConfirm = async ({ remarks }) => {
     try {
       setLoading(true);
-      
+
       console.log('Scores state before submission:', scores);
-      
-      // Validate required fields again
-      if (!others.agent_id || !others.call_id) {
-        toast.error('All fields are required');
-        setLoading(false);
-        return;
-      }
 
-      // Validate all parameter fields are filled
-      const requiredFields = [
-        'callOpening', 'listeningSkills', 'empathyCourtesy', 'toneVoiceModulation',
-        'telephoneEtiquettes', 'languageSkill', 'callClosure', 'probingSkills',
-        'systemCheck', 'explanationSop', 'rebuttalHandling', 'upsellingSkills',
-        'addOnPitch', 'rightInformation', 'documentationCrm', 'documentationOrder'
-      ];
-
-      for (const field of requiredFields) {
-        if (!params[field]) {
-          toast.error('All fields are required');
-          setLoading(false);
-          return;
-        }
-      }
-      
       // Prepare audit data
       const auditData = {
         agent_id: others.agent_id,
         qa_id: user.id,
         call_id: others.call_id,
+        team_leader: others.team_leader,
+        calling_number: others.calling_number,
+        call_date: others.call_date,
+        call_time: others.call_time,
+        call_duration: others.call_duration,
+        call_category: others.call_category,
+        call_type: others.call_type,
+        lob: others.lob,
+        order_non_order: others.order_non_order,
+        data_type: others.data_type,
+        type_of_audit: others.type_of_audit,
+        primary_call_tag_agent: others.primary_call_tag_agent,
+        primary_call_tag_actual: others.primary_call_tag_actual,
+        secondary_call_tag_agent: others.secondary_call_tag_agent,
+        secondary_call_tag_actual: others.secondary_call_tag_actual,
+        call_opening_language: others.call_opening_language,
+        customer_language: others.customer_language,
+        call_language: others.call_language,
+        acpt: others.acpt,
+        fatal_reason: others.fatal_reason,
+        acpt_reasons: others.acpt_reasons,
+        process_voc: others.process_voc,
+        product_voc: others.product_voc,
+        tech_voc: others.tech_voc,
+        tni: others.tni,
+        areas_of_improvement: others.areas_of_improvement,
+        call_brief: others.call_brief,
+        fully_paid_delivery_orders: others.fully_paid_delivery_orders,
         call_opening: params.callOpening,
         call_opening_remark: params.callOpeningRemark || '',
         listening_skills: params.listeningSkills,
@@ -367,7 +444,7 @@ export default function AuditForm() {
         scored: scores.scored,
         scorable: scores.scorable,
         non_fatal_score: scores.nonFatalScore,
-        status: 'COMPLETED'
+        status: 'IN_PROGRESS'
       };
 
       if (editMode && editAuditId) {
@@ -407,48 +484,6 @@ export default function AuditForm() {
       setLoading(false);
     }
   };
-
-
-  const FATAL_PARAMS = [
-    'toneVoiceModulation',
-    'telephoneEtiquettes',
-    'probingSkills',
-    'systemCheck',
-    'explanationSop',
-    'rebuttalHandling',
-    'upsellingSkills',
-    'addOnPitch',
-    'rightInformation',
-    'documentationCrm',
-    'documentationOrder'
-  ];
-
-  const fatalCount = FATAL_PARAMS.reduce((count, key) => {
-    const val = params[key];
-    if (val && val.startsWith('NO')) {
-      return count + 1;
-    }
-    return count;
-  }, 0);
-
-  const fatalStatus = fatalCount > 0 ? "Yes" : "No";
-
-  const calculateScored = () => {
-    let totalScore = 0;
-    for (const field of FIELDS) {
-      const selectedValue = params[field.id];
-      if (selectedValue) {
-        const selectedOpt = field.opts.find(o => o.value === selectedValue);
-        if (selectedOpt && selectedOpt.score !== undefined) {
-          totalScore += selectedOpt.score;
-        }
-      }
-    }
-    return totalScore;
-  };
-
-  const totalScored = calculateScored();
-
   return (
     <div className="audit-form-page">
       <div className="page-header">
@@ -471,7 +506,7 @@ export default function AuditForm() {
             </div>
 
             <div className="audit-col-side">
-              <ScoresSection values={{...scores, fatalCount, fatalStatus, scored: totalScored}} onChange={updateScore} />
+              <ScoresSection values={scores} onChange={updateScore} />
 
               <div className="card quick-summary" style={{ marginTop: 16 }}>
                 <div className="card-header">
@@ -482,9 +517,9 @@ export default function AuditForm() {
                     <div className="summary-row">
                       <span className="summary-key">Status</span>
                       <span className={`summary-val status-chip ${
-                        fatalStatus === 'Yes' ? 'status-fatal' : 'status-ok'
+                        scores.fatalStatus === 'Yes' ? 'status-fatal' : 'status-ok'
                       }`}>
-                        {fatalStatus === 'Yes' ? '⚠ Fatal' : '✓ Non-Fatal'}
+                        {scores.fatalStatus === 'Yes' ? '⚠ Fatal' : '✓ Non-Fatal'}
                       </span>
                     </div>
                     <div className="summary-row">
@@ -517,6 +552,7 @@ export default function AuditForm() {
           changes={buildChanges()}
           onClose={() => setShowModal(false)}
           onConfirm={handleConfirm}
+          loading={loading}
         />
       )}
     </div>

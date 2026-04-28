@@ -49,19 +49,19 @@ export default function BulkUpload() {
     <div className="bulk-upload">
       <div className="page-header">
         <h1>Bulk User Upload</h1>
-        <p className="page-subtitle">Upload multiple users at once using CSV or Excel file</p>
+        <p className="page-subtitle">Upload multiple users at once using Excel file</p>
       </div>
 
       <div className="upload-container">
         <div className="upload-section">
           <h2>Upload File</h2>
           <p className="upload-description">
-            Upload CSV or Excel file with users to add them to the system.
+            Upload Excel file with users to add them to the system.
           </p>
 
           <FileUploader
             onFileSelect={handleFileSelect}
-            accept={['.csv', '.xlsx']}
+            accept={['.xlsx']}
             maxSize={10}
           />
 
@@ -107,29 +107,27 @@ export default function BulkUpload() {
           <div className="instructions-content">
             <h3>Required Columns:</h3>
             <ul>
-              <li><strong>UserId</strong> - Unique user identifier</li>
+              <li><strong>Email</strong> - User's email (must be unique)</li>
+              <li><strong>Role</strong> - User's role (AGENT, QA, or ADMIN)</li>
               <li><strong>FirstName</strong> - User's first name</li>
               <li><strong>LastName</strong> - User's last name</li>
-              <li><strong>Email</strong> - User's email (must be unique)</li>
-              <li><strong>Password</strong> - User's password (will be hashed)</li>
               <li><strong>Phone</strong> - User's phone number</li>
-              <li><strong>Language</strong> - User's preferred language (optional)</li>
-              <li><strong>Role</strong> - User's role (AGENT or QA)</li>
+              <li><strong>DOJ</strong> - Date of Joining (format: DD-MMM-YY, e.g., 1-Aug-25)</li>
             </ul>
 
             <h3>Important Notes:</h3>
             <ul>
-              <li>File must be in CSV or Excel format (.xlsx)</li>
+              <li>File must be in Excel format (.xlsx) only</li>
               <li>Maximum file size is 10MB</li>
               <li>Email addresses must be unique</li>
-              <li>Role must be either "AGENT" or "QA" (case-insensitive)</li>
-              <li>Password will be hashed using BCrypt</li>
-              <li>Department field is NOT included in the database</li>
+              <li>Role must be either "AGENT", "QA", or "ADMIN" (case-insensitive)</li>
+              <li>FirstName and LastName are stored only in the User table</li>
+              <li>DOJ format should be DD-MMM-YY (e.g., 1-Aug-25)</li>
             </ul>
 
             <h3>Example Row:</h3>
             <div className="example-row">
-              <code>EMP_001,John,Doe,john.doe@example.com,Pass@123,1234567890,English,AGENT</code>
+              <code>akashaysrivastav@gmail.com,AGENT,Akshay,Srivastav,9346792878,1-Aug-25</code>
             </div>
           </div>
         </div>

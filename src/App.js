@@ -11,14 +11,15 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Agent Dashboard
 import AgentDashboard from './pages/AgentDashboard/AgentDashboard';
 import MyAudits from './pages/AgentDashboard/MyAudits';
-import AgentReports from './pages/AgentDashboard/AgentReports';
 
 // QA Dashboard
 import QADashboard from './pages/QADashboard/QADashboard';
 import AuditForm from './pages/QADashboard/AuditForm';
 import MyAuditsList from './pages/QADashboard/MyAuditsList';
-import BulkUpload from './pages/QADashboard/BulkUpload';
-import QAReports from './pages/QADashboard/QAReports';
+
+// Admin Dashboard
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import BulkUpload from './pages/AdminDashboard/BulkUpload';
 
 export default function App() {
   return (
@@ -35,7 +36,6 @@ export default function App() {
           </ProtectedRoute>
         }>
           <Route index element={<MyAudits />} />
-          <Route path="reports" element={<AgentReports />} />
         </Route>
 
         {/* QA Routes */}
@@ -46,8 +46,15 @@ export default function App() {
         }>
           <Route index element={<AuditForm />} />
           <Route path="my-audits" element={<MyAuditsList />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <AdminDashboard />
+          </ProtectedRoute>
+        }>
           <Route path="upload-users" element={<BulkUpload />} />
-          <Route path="reports" element={<QAReports />} />
         </Route>
 
         {/* Default Redirect */}

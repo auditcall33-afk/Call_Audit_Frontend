@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
-import { X, Minus, Maximize2, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Maximize2, CheckCircle2 } from 'lucide-react';
 import './UpdateModal.css';
 
-export default function UpdateModal({ changes = [], onClose, onConfirm }) {
+export default function UpdateModal({ changes = [], onClose, onConfirm, loading = false }) {
   const [remarksChecked, setRemarksChecked] = useState(false);
   const [remarks, setRemarks] = useState('');
-  const [minimized, setMinimized] = useState(false);
   const [maximized, setMaximized] = useState(false);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   if (!changes.length) return null;
 
   return (
-    <div className={`modal-backdrop ${minimized ? 'modal-minimized' : ''}`} role="dialog" aria-modal="true" aria-label="Update Confirmation">
-      <div className={`modal-box ${maximized ? 'modal-maximized' : ''} ${minimized ? 'modal-min-box' : ''}`}>
+    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Update Confirmation">
+      <div className={`modal-box ${maximized ? 'modal-maximized' : ''}`}>
 
         {/* Title bar */}
         <div className="modal-titlebar">
@@ -22,13 +29,12 @@ export default function UpdateModal({ changes = [], onClose, onConfirm }) {
             <span className="modal-change-count">{changes.length} change{changes.length !== 1 ? 's' : ''}</span>
           </div>
           <div className="modal-window-controls">
-            <button className="modal-win-btn" onClick={() => setMinimized(m => !m)} aria-label="Minimize"><Minus size={14} /></button>
-            <button className="modal-win-btn" onClick={() => setMaximized(m => !m)} aria-label="Maximize"><Maximize2 size={14} /></button>
-            <button className="modal-win-btn modal-close" onClick={onClose} aria-label="Close"><X size={14} /></button>
+            <button className="modal-win-btn" onClick={() => setMaximized(m => !m)} disabled={loading} aria-label="Maximize"><Maximize2 size={14} /></button>
+            <button className="modal-win-btn modal-close" onClick={onClose} disabled={loading} aria-label="Close"><X size={14} /></button>
           </div>
         </div>
 
-        {!minimized && (
+        {true && (
           <>
             <div className="modal-body">
               <p className="modal-subtitle">Please review the following changes before submitting.</p>
@@ -81,10 +87,10 @@ export default function UpdateModal({ changes = [], onClose, onConfirm }) {
             </div>
 
             <div className="modal-footer">
-              <button className="btn btn-ghost btn-md" onClick={onClose}>Cancel</button>
-              <button className="btn btn-primary btn-md" onClick={() => onConfirm({ remarks })}>
+              <button className="btn btn-ghost btn-md" onClick={onClose} disabled={loading}>Cancel</button>
+              <button className="btn btn-primary btn-md" onClick={() => onConfirm({ remarks })} disabled={loading}>
                 <CheckCircle2 size={16} />
-                Confirm &amp; Submit
+                {loading ? 'Submitting...' : 'Confirm & Submit'}
               </button>
             </div>
           </>

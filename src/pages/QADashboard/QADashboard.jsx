@@ -16,9 +16,7 @@ export default function QADashboard() {
 
   const navItems = [
     { path: '/qa', label: 'Audit Form', icon: '📝' },
-    { path: '/qa/my-audits', label: 'My Audits', icon: '📋' },
-    { path: '/qa/upload-users', label: 'Upload Users', icon: '📤' },
-    { path: '/qa/reports', label: 'Reports', icon: '📊' }
+    { path: '/qa/my-audits', label: 'My Audits', icon: '📋' }
   ];
 
   return (
@@ -49,8 +47,7 @@ export default function QADashboard() {
               {user?.firstName?.[0] || user?.email?.[0] || 'U'}
             </div>
             <div className="user-details">
-              <div className="user-name">{user?.firstName || user?.email}</div>
-              <div className="user-role">{user?.role}</div>
+              <div className="user-name">{user?.firstName || ''} {user?.lastName || ''}</div>
             </div>
           </div>
           <button onClick={handleLogout} className="logout-button">

@@ -191,9 +191,11 @@ export default function MyAudits() {
               <thead>
                 <tr>
                   <th>Call ID</th>
+                  <th>Agent ID</th>
                   <th>Audit Date</th>
                   <th>QA Name</th>
                   <th>Scored</th>
+                  <th>Non Fatal Score</th>
                   <th>Fatal Status</th>
                   <th>Audit Status</th>
                   <th>Actions</th>
@@ -203,11 +205,13 @@ export default function MyAudits() {
                 {currentItems.map(audit => (
                   <tr key={audit.id || audit.auditId}>
                     <td>{audit.call_id || audit.callId}</td>
+                    <td>{audit.agent_id || audit.agentId || audit.agent?.agent_id || audit.agent?.agentId || user.agent_id || user.agentId || '-'}</td>
                     <td>{new Date(audit.created_at || audit.createdAt || audit.audit_date || audit.auditDate).toLocaleDateString()}</td>
                     <td>
                       {audit.qa ? `${audit.qa.first_name || audit.qa.firstName} ${audit.qa.last_name || audit.qa.lastName}` : audit.qa_name || audit.qaName || '-'}
                     </td>
                     <td>{audit.scored || audit.scored || 0}/100</td>
+                    <td>{audit.non_fatal_score || audit.nonFatalScore || 0}</td>
                     <td>
                       <StatusBadge status={audit.fatal_status || audit.fatalStatus || 'No'} type="fatal" />
                     </td>

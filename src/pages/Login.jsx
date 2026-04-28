@@ -42,6 +42,9 @@ export default function Login() {
       } else if (userRole === 'QA') {
         console.log('Navigating to /qa');
         navigate('/qa');
+      } else if (userRole === 'ADMIN') {
+        console.log('Navigating to /admin/upload-users');
+        navigate('/admin/upload-users');
       } else {
         console.log('Unknown role:', userRole);
         toast.error(`Unknown role: ${userRole}`);

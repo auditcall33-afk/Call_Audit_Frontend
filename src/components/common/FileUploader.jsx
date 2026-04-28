@@ -11,7 +11,6 @@ const FileUploader = ({ onFileSelect, accept = ['.csv', '.xlsx'], maxSize = 10 }
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop,
     accept: {
-      'text/csv': ['.csv'],
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
     },
     maxSize: maxSize * 1024 * 1024,
@@ -60,14 +59,13 @@ const FileUploader = ({ onFileSelect, accept = ['.csv', '.xlsx'], maxSize = 10 }
                 fontWeight: '600',
                 cursor: 'pointer'
               }}
-              onClick={(e) => e.stopPropagation()}
             >
               Choose File
             </button>
           </div>
         )}
         <p style={{ color: '#9CA3AF', fontSize: '12px', marginTop: '16px' }}>
-          Supported: .csv, .xlsx (Max size: {maxSize}MB)
+          Supported: .xlsx (Max size: {maxSize}MB)
         </p>
       </div>
 

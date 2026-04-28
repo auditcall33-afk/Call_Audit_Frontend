@@ -1,13 +1,13 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../services/authService';
-import './AgentDashboard.css';
+import './AdminDashboard.css';
 
-export default function AgentDashboard() {
+export default function AdminDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = authService.getCurrentUser();
-  console.log('AgentDashboard user:', user);
+  console.log('AdminDashboard user:', user);
 
   const handleLogout = () => {
     authService.logout();
@@ -15,16 +15,16 @@ export default function AgentDashboard() {
   };
 
   const navItems = [
-    { path: '/agent', label: 'My Audits', icon: '📋' }
+    { path: '/admin/upload-users', label: 'Upload Users', icon: '📤' }
   ];
 
   return (
-    <div className="agent-dashboard">
+    <div className="admin-dashboard">
       {/* Sidebar */}
-      <aside className="agent-sidebar">
+      <aside className="admin-sidebar">
         <div className="sidebar-header">
           <h2>Call Audit System</h2>
-          <span className="role-badge">AGENT</span>
+          <span className="role-badge">ADMIN</span>
         </div>
         
         <nav className="sidebar-nav">
@@ -56,7 +56,7 @@ export default function AgentDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="agent-main">
+      <main className="admin-main">
         <Outlet />
       </main>
     </div>
