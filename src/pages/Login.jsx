@@ -38,13 +38,13 @@ export default function Login() {
       
       if (userRole === 'AGENT') {
         console.log('Navigating to /agent');
-        navigate('/agent');
+        navigate('/agent', { replace: true });
       } else if (userRole === 'QA') {
         console.log('Navigating to /qa');
-        navigate('/qa');
+        navigate('/qa', { replace: true });
       } else if (userRole === 'ADMIN') {
         console.log('Navigating to /admin/upload-users');
-        navigate('/admin/upload-users');
+        navigate('/admin/upload-users', { replace: true });
       } else {
         console.log('Unknown role:', userRole);
         toast.error(`Unknown role: ${userRole}`);
