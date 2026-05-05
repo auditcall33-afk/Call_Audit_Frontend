@@ -6,30 +6,31 @@ export const userService = {
   bulkUploadUsers: async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await axios.post(
       `${API_BASE_URL}/users/bulk-upload`,
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          'Content-Type': 'multipart/form-data'
+        },
+        withCredentials: true
       }
     );
     return response.data;
   },
 
   downloadSampleTemplate: () => {
-    // Create a sample CSV template matching backend expectations
-    const headers = ['UserId', 'FirstName', 'LastName', 'Email', 'Password', 'Phone', 'Language', 'Role'];
+    // Create a sample CSV template matching new Excel format
+    const headers = ['Email', 'Role', 'FirstName', 'LastName', 'Phone', 'DOJ'];
     const sampleData = [
       headers.join(','),
-      'EMP_001,John,Doe,john.doe@example.com,Pass@123,1234567890,English,AGENT',
-      'EMP_002,Jane,Smith,jane.smith@example.com,Pass@123,9876543210,English,AGENT',
-      'QA_001,Admin,User,admin@example.com,Admin@123,5555555555,English,QA'
+      'akashaysrivastav@gmail.com,AGENT,Akshay,Srivastav,9346792878,1-Aug-25',
+      'beingvickysingh@gmail.com,AGENT,Vicky,Kumar,6301931389,1-Aug-25',
+      'parveenshadiba@gmail.com,QA,Shadiba,Parveen,7895018606,1-Aug-25',
+      'shrutisharmaoza0221@gmail.com,QA,Shruthi,Sharma,8374284186,1-Aug-25'
     ];
-    
+
     const csvContent = sampleData.join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');

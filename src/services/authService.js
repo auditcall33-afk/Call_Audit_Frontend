@@ -9,20 +9,23 @@ export const authService = {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, {
       email,
       password
+    }, {
+      withCredentials: true
     });
     console.log('Login response:', response.data);
-    if (response.data.accessToken) {
-      localStorage.setItem('token', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      // The entire response contains user data, not a nested user object
+    // Tokens are now stored in HttpOnly cookies by the backend
+    // Store user data in localStorage for UI purposes only
+    if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
     }
     return response.data;
   },
 
-  logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
+  logout: async () => {
+    // Call backend to clear cookies
+    await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
+      withCredentials: true
+    });
     localStorage.removeItem('user');
   },
 
@@ -32,15 +35,19 @@ export const authService = {
   },
 
   getToken: () => {
-    return localStorage.getItem('token');
+    // Tokens are now in HttpOnly cookies, not accessible from JS
+    return null;
   },
 
   getRefreshToken: () => {
-    return localStorage.getItem('refreshToken');
+    // Tokens are now in HttpOnly cookies, not accessible from JS
+    return null;
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+    // Check if user data exists in localStorage
+    const user = localStorage.getItem('user');
+    return !!user;
   },
 
   hasRole: (requiredRole) => {
@@ -49,17 +56,10 @@ export const authService = {
   },
 
   refreshToken: async () => {
-    const refreshToken = authService.getRefreshToken();
-    if (!refreshToken) {
-      throw new Error('No refresh token available');
-    }
-    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-      refreshToken
+    // Refresh tokens are now handled automatically by the backend via cookies
+    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
+      withCredentials: true
     });
-    if (response.data.accessToken) {
-      localStorage.setItem('token', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-    }
     return response.data;
   }
 };

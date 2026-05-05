@@ -5,34 +5,34 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
 export const auditService = {
   getAudits: async () => {
     const response = await axios.get(`${API_BASE_URL}/audits`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
 
   getAuditById: async (id) => {
     const response = await axios.get(`${API_BASE_URL}/audits/${id}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
 
   getAuditsByAgentId: async (agentId) => {
     const response = await axios.get(`${API_BASE_URL}/audits/me`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
 
   getAuditsByQaId: async (qaId) => {
     const response = await axios.get(`${API_BASE_URL}/audits`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     console.log('User QA ID passed:', qaId);
     console.log('All audits:', response.data);
     // Try filtering by qaId first, then by qa.userId
-    const filtered = response.data.filter(audit => 
-      audit.qaId === qaId || 
+    const filtered = response.data.filter(audit =>
+      audit.qaId === qaId ||
       (audit.qa && audit.qa.userId === qaId) ||
       (audit.qa && audit.qa.qaId === qaId)
     );
@@ -88,7 +88,7 @@ export const auditService = {
     };
 
     const response = await axios.post(`${API_BASE_URL}/audits`, transformedData, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
@@ -139,14 +139,14 @@ export const auditService = {
     if (auditData.non_fatal_score) transformedData.nonFatalScore = auditData.non_fatal_score;
 
     const response = await axios.put(`${API_BASE_URL}/audits/${id}`, transformedData, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
 
   completeAudit: async (id) => {
     const response = await axios.put(`${API_BASE_URL}/audits/${id}/complete`, {}, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
@@ -157,14 +157,14 @@ export const auditService = {
       acknowledgeRemark: acknowledgmentData.acknowledgmentComment || ''
     };
     const response = await axios.put(`${API_BASE_URL}/audits/${id}/acknowledgement`, transformedData, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   },
 
   rejectAcknowledgment: async (id) => {
     const response = await axios.put(`${API_BASE_URL}/audits/${id}/acknowledgement/reject`, {}, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      withCredentials: true
     });
     return response.data;
   }
