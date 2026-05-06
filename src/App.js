@@ -6,6 +6,8 @@ import './styles/global.css';
 import './App.css';
 
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Agent Dashboard
@@ -26,8 +28,10 @@ export default function App() {
     <Router>
       <ToastContainer position="top-right" />
       <Routes>
-        {/* Public Route */}
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Agent Routes */}
         <Route path="/agent" element={

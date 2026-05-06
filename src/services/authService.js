@@ -61,5 +61,28 @@ export const authService = {
       withCredentials: true
     });
     return response.data;
+  },
+
+  forgotPassword: async (email) => {
+    const response = await axios.post(`${API_BASE_URL}/auth/forgot-password`, {
+      email
+    });
+    return response.data;
+  },
+
+  validateResetToken: async (token) => {
+    const response = await axios.get(`${API_BASE_URL}/auth/validate-reset-token`, {
+      params: { token }
+    });
+    return response.data;
+  },
+
+  resetPassword: async (token, newPassword, confirmPassword) => {
+    const response = await axios.post(`${API_BASE_URL}/auth/reset-password`, {
+      token,
+      newPassword,
+      confirmPassword
+    });
+    return response.data;
   }
 };
