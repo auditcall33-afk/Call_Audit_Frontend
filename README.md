@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Call Audit System - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the React frontend for the **Call Audit System**, a web application used to audit and evaluate call center agent performance. It supports three user roles: **Agent**, **QA (Quality Analyst)**, and **Admin**, each with dedicated dashboards and features.
 
-## Available Scripts
+## What This Project Does
 
-In the project directory, you can run:
+The Call Audit System enables:
 
-### `npm start`
+- **QA Analysts** to audit agent calls by filling out audit forms, viewing their audit history, and generating reports.
+- **Agents** to view their own audit scores and performance summaries.
+- **Admins** to upload users in bulk and manage the system.
+- **All Users** to securely log in with role-based access, reset forgotten passwords, and set passwords for first-time login.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Authentication
+- Role-based login (AGENT / QA / ADMIN)
+- JWT-based authentication with HttpOnly cookies
+- Password visibility toggle on login
+- Forgot password flow with email reset link
+- First-time password setup via same reset flow
 
-### `npm test`
+### QA Dashboard (`/qa`)
+- Audit call form with scoring criteria
+- View "My Audits" history
+- Audit form auto-saves drafts
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Agent Dashboard (`/agent`)
+- View personal audit scores
+- Performance summary
 
-### `npm run build`
+### Admin Dashboard (`/admin`)
+- Bulk user upload via Excel/CSV
+- System management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React 19** with functional components and Hooks
+- **React Router v7** for client-side routing
+- **Axios** for HTTP requests
+- **React Toastify** for notifications
+- **JSPDF + AutoTable** for PDF report generation
+- **xlsx** for Excel file handling
+- **Lucide React** for icons
+- **React Datepicker** for date inputs
+- **React Dropzone** for file uploads
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+### Prerequisites
+- Node.js (v18 or higher)
+- npm
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Running the App
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+Runs in development mode at [http://localhost:3000](http://localhost:3000).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The development proxy is configured to forward API calls to `http://localhost:8081`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Environment Variables
 
-### Code Splitting
+Create a `.env` file in the project root:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```env
+REACT_APP_API_URL=http://localhost:8081/api
+```
 
-### Analyzing the Bundle Size
+If not set, it defaults to `/api` (using the proxy).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Build for Production
 
-### Making a Progressive Web App
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Creates an optimized production build in the `build/` folder.
 
-### Advanced Configuration
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+src/
+├── components/        # Reusable components (ProtectedRoute, Sidebar, etc.)
+├── pages/
+│   ├── Login.jsx                  # Login page
+│   ├── ForgotPassword.jsx         # Forgot password request
+│   ├── ResetPassword.jsx          # Reset password / first-time setup
+│   ├── AgentDashboard/            # Agent views
+│   ├── QADashboard/               # QA audit form and history
+│   └── AdminDashboard/            # Admin bulk upload
+├── services/
+│   └── authService.js             # Auth API calls
+├── styles/
+│   └── global.css                 # Global styles
+├── App.js                         # Route definitions
+└── index.js                       # Entry point
+```
 
-### Deployment
+## Role-Based Routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| Route | Role | Description |
+|-------|------|-------------|
+| `/login` | Public | Login page |
+| `/forgot-password` | Public | Request password reset |
+| `/reset-password?token=...` | Public | Set/reset password |
+| `/agent` | AGENT | Agent dashboard & my audits |
+| `/qa` | QA | Audit form & my audits list |
+| `/admin/upload-users` | ADMIN | Bulk user upload |
 
-### `npm run build` fails to minify
+## API Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The frontend communicates with a Spring Boot backend. Key endpoints:
+
+- `POST /api/auth/login` - Authenticate user
+- `POST /api/auth/forgot-password` - Request reset link
+- `GET /api/auth/validate-reset-token` - Validate reset token
+- `POST /api/auth/reset-password` - Reset/Set password
+- `POST /api/auth/logout` - Clear session
+
+Authentication tokens are stored in **HttpOnly cookies** by the backend for security. The frontend only stores basic user info (role, name) in `localStorage` for UI purposes.
